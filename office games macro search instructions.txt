@@ -1,0 +1,92 @@
+################################################################################
+##  Excel Embedded Flash Games/Macro Search Script  ############################
+################################################################################
+#                                                                              #
+# Purpose:  Generally, since Flash games start with the characters "FWS" even  #
+# if they are within an Excel file, simple shell commands tied together to     #
+# open every Excel file and go line by line looking for "FWS" will find any    #
+# embedded flash. While at it, this will also look for "Sub" in files to find  #
+# files with macros. This will identify many false positives but most can be   #
+# easily identified as legitimate by the file name.                            #
+#                                                                              #
+# This is a very crude way to find macros and Flash but was written for use    #
+# while working as an ISSM in an environment where approving new scripts and   #
+# software takes time. It was written to just be directly typed in and later   #
+# adapted in case anybody else could find it useful. Since it was written for  #
+# USG use and is very simple, I have released it via CC0 to the Public Domain. #
+#                                                                              #
+# Usage: Copy/paste or type what is below and change if needed.                #
+#                                                                              #
+# Default locations searched are / or P:\ and the log is saved by default in   #
+# the current user's Desktop (assumes a graphical environment).                #
+#                                                                              #
+# Caveats: The user won't be able to search files that they don't have read    #
+# access on.                                                                   #
+#                                                                              #
+# Script Location:                                                             #
+# https://github.com/junovitch/info-sec                                        #
+#                                                                              #
+################################################################################
+#                                                                              #
+# Written in 2012 by Jason Unovitch                                            #
+# oneshotuno@yahoo.com, jason.unovitch@us.af.mil                               #
+#                                                                              #
+# To the extent possible under law, the author(s) have dedicated all copyright #
+# and related and neighboring rights to this software to the public domain     #
+# worldwide. This software is distributed without any warranty.                #
+#                                                                              #
+# You should have received a copy of the CC0 Public Domain Dedication along    #
+# with this software.                                                          #
+# If not, see <http://creativecommons.org/publicdomain/zero/1.0/>              #
+#                                                                              #
+################################################################################
+
+Windows Version (Compatible with Windows XP, WIndows Vista, and Windows 7)
+
+
+echo Embedded games scan started by %USERNAME% on %DATE% %TIME% for P:\ > "%USERPROFILE%\Desktop\flashlog.txt"
+FOR /R "P:\" %f IN (*.xls) DO FINDSTR /R "FWS" "%f" > NUL && if not errorlevel 1 echo REVIEW: %f >> "%USERPROFILE%\Desktop\flashlog.txt"
+
+
+DETAILED EXPLANATION FOR WINDOWS ADMINISTRATORS:
+
+System administrators running the command will only have to adjust the "P:\"
+in step 2 to search where needed. 
+
+1.  This will create a blank file called flashlog.txt on the user's desktop with
+some basic information on who/what/when/where.
+
+echo ... > "%USERPROFILE%\Desktop\flashlog.txt
+
+
+2.  This instructs recursively (/R) going though every .xls file and passing that
+on with the %f token.
+
+FOR /R "P:\" %f IN (*.xls)
+
+
+3.  This instructs finding the characters "FWS" with a regular expression (/R)
+and not showing any info on what matches ( > NUL).
+
+DO FINDSTR /R "FWS" "%f" > NUL
+
+
+4.  This instructions writing to the log if the match isn't errorlevel 1,
+meaning that no matches were found within the file.
+
+&& if not errorlevel 1 echo REVIEW: %f
+
+
+5.  Finally the >> will append the result onto the log created earlier.
+
+>> "%USERPROFILE%\Desktop\flashlog.txt"
+
+
+################################################################################
+################################################################################
+
+Linux/Unix Version (Compatible with standard /bin/sh and /bin/bash)
+
+
+echo "Embedded games scan started by $USER on $(date) for /mnt/raid/" > "$HOME/Desktop/flashlog.txt"
+find "/mnt/raid/" -regex ".*\.\(xls\|ppt\|doc\)" -print0 | xargs -0 grep -e "FWS" >> "$HOME/Desktop/flashlog.txt"
