@@ -28,6 +28,7 @@
 #                                                                              #
 # Script Location:                                                             #
 # https://github.com/junovitch/info-sec                                        #
+# https://mysites.eim.acc.af.mil/personal/jason_unovitch/Shared%20Documents    #
 #                                                                              #
 ################################################################################
 #                                                                              #
