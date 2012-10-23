@@ -28,6 +28,7 @@ rem # access on.                                                                
 rem #                                                                              #
 rem # Script Location:                                                             #
 rem # https://github.com/junovitch/info-sec                                        #
+rem # https://mysites.eim.acc.af.mil/personal/jason_unovitch/Shared%20Documents    #
 rem #                                                                              #
 rem ################################################################################
 rem #                                                                              #
@@ -44,10 +45,11 @@ rem # If not, see <http://creativecommons.org/publicdomain/zero/1.0/>           
 rem #                                                                              #
 rem ################################################################################
 
-set SEARCHWHERE=C:\
-set LOGFILE=%USERPROFILE%\flashlog.txt
+set SEARCHWHERE=%USERPROFILE%
+set LOGFILE=%USERPROFILE%\Desktop\flashlog.txt
 set WHAT=*.xls *.ppt *.doc
 set TERMS=FWS CWS \ Sub
 
-echo Embedded games scan started by %USERNAME% on %DATE% %TIME% for %SEARCHWHERE% > %LOGFILE%
-FOR /R %SEARCHWHERE% %f IN (%WHAT%) DO FINDSTR /R "%TERMS%" "%f" > NUL && if not errorlevel 1 echo REVIEW: %f >> "%LOGFILE%"
+@echo on
+echo Embedded games scan started by %USERNAME% on %DATE% %TIME% for %SEARCHWHERE% > "%LOGFILE%"
+FOR /R %SEARCHWHERE% %%f IN (%WHAT%) DO FINDSTR /R "%TERMS%" "%%f" > NUL && if not errorlevel 1 echo REVIEW: %%f >> "%LOGFILE%"
